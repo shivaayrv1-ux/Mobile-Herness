@@ -1,0 +1,9 @@
+{
+  "appId": "com.vikki.mhcloud",
+  "appName": "MH Cloud",
+  "webDir": "www",
+  "backgroundColor": "#0b0d12",
+  "server": {
+    "androidScheme": "https"
+  }
+}
