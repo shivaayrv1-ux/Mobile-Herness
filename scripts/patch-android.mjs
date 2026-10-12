@@ -1,5 +1,5 @@
 // Runs in CI right after `npx cap add android`.
-// 1) copies our native SSH plugin (Java) into the generated Android project (if exists)
+// 1) copies our native SSH plugin (Java) into the generated Android project
 // 2) adds the JSch SSH library dependency
 // 3) sets minSdk 26 (JSch needs java.nio) and disables auto-backup (credentials are Keystore-encrypted)
 import fs from 'node:fs';
@@ -14,18 +14,13 @@ if (!fs.existsSync(androidDir)) {
   process.exit(1);
 }
 
-// 1) native java files (optional - skip if native/android doesn't exist)
-const nativeDir = path.resolve('native/android');
-if (fs.existsSync(nativeDir)) {
-  const javaDir = path.join(androidDir, 'app/src/main/java', APP_ID_PATH);
-  fs.mkdirSync(javaDir, { recursive: true });
-  for (const f of fs.readdirSync(nativeDir)) {
-    if (!f.endsWith('.java')) continue;
-    fs.copyFileSync(path.join(nativeDir, f), path.join(javaDir, f));
-    console.log('installed ' + f);
-  }
-} else {
-  console.log('native/android folder not found - skipping native SSH plugin');
+// 1) native java files
+const javaDir = path.join(androidDir, 'app/src/main/java', APP_ID_PATH);
+fs.mkdirSync(javaDir, { recursive: true });
+for (const f of fs.readdirSync('native/android')) {
+  if (!f.endsWith('.java')) continue;
+  fs.copyFileSync(path.join('native/android', f), path.join(javaDir, f));
+  console.log('installed ' + f);
 }
 
 // 2) gradle dependency
